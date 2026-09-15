@@ -1,4 +1,6 @@
 import os
+import sys
+import subprocess
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -16,11 +18,26 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
 
-def run_server():
+def start_web():
     server = HTTPServer(("0.0.0.0", PORT), Handler)
+    print("WEB SERVER ISHLAYAPTI", flush=True)
     server.serve_forever()
 
 
-threading.Thread(target=run_server, daemon=True).start()
+threading.Thread(target=start_web, daemon=True).start()
 
-os.system("python bot.py")
+print("BOT ISHGA TUSHIRILMOQDA...", flush=True)
+
+process = subprocess.Popen(
+    [sys.executable, "-u", "bot.py"],
+    stdout=sys.stdout,
+    stderr=sys.stderr
+)
+
+print("BOT PROCESS ISHLAYAPTI", flush=True)
+
+exit_code = process.wait()
+
+print(f"BOT TO'XTADI. CODE: {exit_code}", flush=True)
+
+sys.exit(1)
